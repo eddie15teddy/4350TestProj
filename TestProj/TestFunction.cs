@@ -18,7 +18,12 @@ namespace MySpace
         public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
-            return new OkObjectResult("Welcome to Azure Functions!");
+            return new ContentResult
+            {
+                Content = "<html><body><h1>Welcome to Azure Functions!</h1></body></html>",
+                ContentType = "text/html",
+                StatusCode = 200
+            };
         }
     }
 }
