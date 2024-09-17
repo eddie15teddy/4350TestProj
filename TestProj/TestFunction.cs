@@ -19,7 +19,7 @@ namespace MySpace
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            string responseString = "I am just a dummy endpoint for COMP 4350. Add num1 and num2 querry params.<br>(example: ?num1=1&num2=8)";
+            string responseString = "Add num1 and num2 querry params.<br>(example: ?num1=1&num2=8)";
             string ?num1 = req.Query["num1"];
             string ?num2 = req.Query["num2"];
 
@@ -31,7 +31,7 @@ namespace MySpace
 
             return new ContentResult
             {
-                Content = $"<html><body><h1>{responseString}</h1></body></html>",
+                Content = $"<html><body><h1>I am just a dummy endpoint</h1><p>{responseString}<p></body></html>",
                 ContentType = "text/html",
                 StatusCode = 200
             };
