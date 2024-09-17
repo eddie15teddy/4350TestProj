@@ -19,13 +19,13 @@ namespace MySpace
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            string responseString = "I am just a dummy endpoint for COMP 4350. Add num1 and num2 querry params.";
+            string responseString = "I am just a dummy endpoint for COMP 4350. Add num1 and num2 querry params.<br>(example: ?num1=1&num2=8)";
             string ?num1 = req.Query["num1"];
             string ?num2 = req.Query["num2"];
 
             if (!string.IsNullOrEmpty(num1) && !string.IsNullOrEmpty(num2)) 
             {
-                responseString = $"{num1} + {num2} = {num1 +  num2}";
+                responseString = $"{num1} + {num2} = {num1 + num2}";
             }
 
 
