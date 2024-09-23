@@ -21,7 +21,7 @@ namespace MySpace
         }
 
         [Function("TestFunction")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
+        public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -34,33 +34,32 @@ namespace MySpace
                 responseString = $"{num1} + {num2} = {num1 + num2}";
             }
 
-            var tokenCredential = new AzureServiceTokenProvider();
-
-            var token = await tokenCredential.GetAccessTokenAsync("https://ossrdbms-aad.database.windows.net");
-
             var builder = new MySqlConnectionStringBuilder
             {
                 Server = "4350test.mysql.database.azure.com",
                 Port = 3306,
                 Database = "testdb",
-                UserID = "testfunctionappuser@4350test",
-                Password = token,  
-                SslMode = MySqlSslMode.Required              
+                UserID = "eddie15teddy",
+                Password = "1234567-nine",  
             };
             _logger.LogInformation(builder.ConnectionString);
             
-
             using var conn = new MySqlConnection(builder.ConnectionString);
             
-
             _logger.LogInformation("Opening connection");
             conn.Open();
             _logger.LogInformation("I think its working");
-            
+
+            using var command = conn.CreateCommand();
+            command.CommandText = $"insert into access (access_time) value ('{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}');";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "select count(*) from access;";
+            var rowCount = command.ExecuteScalar();
 
             return new ContentResult
             {
-                Content = $"<html><body><h1>I am just a dummy endpoint</h1><p>{responseString}<p></body></html>",
+                Content = $"<html><body><h1>I am just a dummy endpoint</h1><p>{responseString}</p><p>Number of Visits: {rowCount}</p></body></html>",
                 ContentType = "text/html",
                 StatusCode = 200
             };
